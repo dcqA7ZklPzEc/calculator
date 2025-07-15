@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Basic Calculator</title>
+  <style>
+    body {
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .calculator {
+      background: #222;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px #00000080;
+      width: 320px;
+    }
+
+    .display {
+      background: #000;
+      color: #0f0;
+      font-size: 2rem;
+      padding: 15px;
+      border-radius: 8px;
+      text-align: right;
+      margin-bottom: 10px;
+      min-height: 50px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    button {
+      padding: 20px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      background: #333;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background: #555;
+    }
+
+    .operator {
+      background: #f39c12;
+      color: white;
+    }
+
+    .equals {
+      background: #27ae60;
+      color: white;
+    }
+
+    .clear {
+      background: #e74c3c;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="calculator">
+    <div class="display" id="display">0</div>
+    <div class="buttons">
+      <button class="clear" onclick="clearDisplay()">C</button>
+      <button onclick="append('%')">%</button>
+      <button onclick="append('/')">/</button>
+      <button class="operator" onclick="append('*')">*</button>
+
+      <button onclick="append('7')">7</button>
+      <button onclick="append('8')">8</button>
+      <button onclick="append('9')">9</button>
+      <button class="operator" onclick="append('-')">-</button>
+
+      <button onclick="append('4')">4</button>
+      <button onclick="append('5')">5</button>
+      <button onclick="append('6')">6</button>
+      <button class="operator" onclick="append('+')">+</button>
+
+      <button onclick="append('1')">1</button>
+      <button onclick="append('2')">2</button>
+      <button onclick="append('3')">3</button>
+      <button class="equals" onclick="calculate()">=</button>
+
+      <button onclick="append('0')" style="grid-column: span 2">0</button>
+      <button onclick="append('.')">.</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+
+    function append(value) {
+      if (display.innerText === '0') display.innerText = '';
+      display.innerText += value;
+    }
+
+    function clearDisplay() {
+      display.innerText = '0';
+    }
+
+    function calculate() {
+      try {
+        display.innerText = eval(display.innerText);
+      } catch (e) {
+        display.innerText = 'Error';
+      }
+    }
+
+    // Keyboard support
+    document.addEventListener('keydown', function (e) {
+      const key = e.key;
+      if ((/\d/).test(key) || ['+', '-', '*', '/', '%', '.'].includes(key)) {
+        append(key);
+      } else if (key === 'Enter' || key === '=') {
+        calculate();
+      } else if (key === 'Backspace') {
+        display.innerText = display.innerText.slice(0, -1) || '0';
+      } else if (key.toLowerCase() === 'c') {
+        clearDisplay();
+      }
+    });
+  </script>
+
+</body>
+</html>
